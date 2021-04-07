@@ -64,6 +64,7 @@
                 </thead>
                 <tbody>
                     @foreach($products as $product)
+                    @if($product->trashed())
                     <tr>
                         <td>{{$product->id}}</td>
                         <td>
@@ -79,11 +80,11 @@
                             <form action="{{ route('product.destroy', $product->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-primary mr-1 mb-2" type="submit">Trash</button>
+                            <button class="btn btn-primary mr-1 mb-2" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>
-                    
+                    @endif
                     @endforeach
                 </tbody>
             </table>

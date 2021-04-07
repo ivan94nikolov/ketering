@@ -49,7 +49,13 @@
                                         </span>
                                     </a>
                                 </li>
-                                
+                                <li class="active">
+                                    <a href="{{  route('trashed-products.index') }}">
+                                        <span class="nav-text">
+                                            Trashed Products 
+                                        </span>
+                                    </a>
+                                </li>
                             </ul>
                         </div><!-- aside content end-->
                     </div><!-- aside hidden scroll end-->

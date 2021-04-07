@@ -27,6 +27,7 @@ Route::prefix('/admin')->group(function(){
     });
     Route::resource('/category', CategoryController::class);
     Route::resource('/product', ProductController::class);
+    Route::get('/trashed-products', 'App\Http\Controllers\ProductController@trashed')->name('trashed-products.index');
 });
 
 Auth::routes();

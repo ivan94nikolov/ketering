@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Session;
 use App\Http\Requests\Product\CreateProductRequest;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProductController extends Controller
@@ -100,11 +101,34 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        $product->delete();
-        session()->flash('success_message', 'Product deleted successfully');
+        $product = Product::withTrashed()->where('id', $id)->firstOrFail();
+        if($product->trashed()){
+            Storage::delete($product->image);
+            $product->forceDelete();
+        }
+        else{
+            $product->delete();
+            return redirect(route('product.index'));
+        }
 
-        return redirect(route('product.index'));
+
+        session()->flash('success_message', 'Product deleted successfully');
+        
+        $trashed = Product::withTrashed()->get();
+        return view('back-end.product.trashed')->with('products', $trashed);
+    }
+
+    
+    /**
+     * Display all trashed products
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function trashed(){
+        $trashed = Product::withTrashed()->get();
+        return view('back-end.product.trashed')->with('products', $trashed);
     }
 }
